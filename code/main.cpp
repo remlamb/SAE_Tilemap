@@ -327,7 +327,6 @@ void undo_input() {
         undo();
     }
 
-
     if (mouse_was_just_released(MOUSE_LEFT) && tiles_modified) {
         history_commit();
         tiles_modified = false;
@@ -430,6 +429,27 @@ void draw_tiles() {
 
 }
 
+void player_on_goal() {
+    //On Goal Event
+    if (tiles[(player.posy) * 20 + player.posx] == TILE_DIAMAND) {
+        if (!isPlayingPickupSound) {
+            audio_play_sound_clip(pickup_sound);
+            isPlayingPickupSound = true;
+        }
+        DrawTextCentered(font, "NICE JOB", 30, -10, COLOR_CYAN);
+    }
+    else {
+        isPlayingPickupSound = false;
+    }
+}
+
+void background_sound_onloop() {
+    if (playing_sound_count == 0) {
+        background_sound = load_sound_clip("assets/The_Empire.wav");
+        audio_play_sound_clip(background_sound);
+    }
+}
+
 void player_input() {
     //switch to edit mode
     if (was_key_just_pressed(KB_KEY_TAB)) {
@@ -462,12 +482,8 @@ void player_input() {
             player.posy += 1;
         }
         //movement on ladder
-        else if (onLadder(player, tiles) && tiles[player.posy * 20 + player.posx + movement_x] == TILE_LADDER) {
+        else if (onLadder(player, tiles) && isEmptyTiles(player.posx + movement_x, player.posy + movement_y, tiles)) {
             player.posx += movement_x;
-            player.posy += movement_y;
-
-        }
-        else if (tiles[(player.posy + 1) * 20 + player.posx] == TILE_LADDER || tiles[(player.posy + 1) * 20 + player.posx] == 0 && movement_y > 0) {
             player.posy += movement_y;
         }
         //X axis movement
@@ -492,23 +508,11 @@ void player_input() {
         reset_player_pos(&player);
     }
 
-    //On Goal Event
-    if (tiles[(player.posy) * 20 + player.posx] == TILE_DIAMAND) {
-        if (!isPlayingPickupSound) {
-            audio_play_sound_clip(pickup_sound);
-            isPlayingPickupSound = true;
-        }
-        DrawTextCentered(font, "NICE JOB", 30, -10, COLOR_CYAN);
-    }
-    else {
-        isPlayingPickupSound = false;
-    }
+    //Player tiles position is Diamond goal
+    player_on_goal();
 
     //Play Background sound in loop 
-    if (playing_sound_count == 0) {
-        background_sound = load_sound_clip("assets/The_Empire.wav");
-        audio_play_sound_clip(background_sound);
-    }
+    background_sound_onloop();
 
     //load lvl
     if (was_key_just_pressed(KB_KEY_1)) {
@@ -545,7 +549,6 @@ void player_input() {
         last_lvl_load = 5;
         editmode = false;
     }
-
 }
 
 void draw_ui() {
