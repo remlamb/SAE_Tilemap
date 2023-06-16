@@ -12,7 +12,8 @@ C:\Users\remla\Desktop\emsdk\emsdk\upstream\emscripten\em++ code\main.cpp ^
     -fansi-escape-codes ^
     -sEXPORT_NAME=my_game ^
     -sASYNCIFY ^
-    --preload-file C:\Users\remla\Documents\VisualStudioProject\TileMap\assets@assets ^
+    --preload-file C:\Users\remla\Documents\VisualStudioProject\TileMap\bin\assets@assets ^
+    --preload-file C:\Users\remla\Documents\VisualStudioProject\TileMap\Level@Level ^
     -sSTRICT=1 ^
     -sENVIRONMENT=web ^
     -sMODULARIZE=1 ^
@@ -24,3 +25,4 @@ C:\Users\remla\Desktop\emsdk\emsdk\upstream\emscripten\em++ code\main.cpp ^
     -sEXPORTED_RUNTIME_METHODS=ccall,cwrap ^
     -sASYNCIFY ^
     --no-entry ^
+    -O3 ^

@@ -36,6 +36,9 @@ span_t load_entire_file(const char* filename)
 {
     span_t span = {};
     FILE* f = fopen(filename, "rb");
+    if (f == 0) {
+        printf("ERROR : File don't load %s \n", filename);
+    }
     fseek(f, 0, SEEK_END);
     span.size = ftell(f);
     fseek(f, 0, SEEK_SET);

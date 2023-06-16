@@ -31,10 +31,11 @@ void DrawPixelAlpha(int x, int y, uint32_t color) {
     uint8_t dest_g = (dest_color >> 8);
     uint8_t dest_b = (dest_color);
 
+
     uint8_t final_r = (uint8_t)(src_r * src_alpha + dest_r * (1.f - src_alpha));
     uint8_t final_g = (uint8_t)(src_g * src_alpha + dest_g * (1.f - src_alpha));
     uint8_t final_b = (uint8_t)(src_b * src_alpha + dest_b * (1.f - src_alpha));
-    resizeBuffer[pixel_index] = MFB_RGB(final_r, final_g, final_b);
+    resizeBuffer[pixel_index] = MFB_ARGB(0xFF, final_r, final_g, final_b);
 }
 
 void LoadImage(img_t& img, const char* chemin) {
@@ -56,7 +57,7 @@ void DrawImage(int posX, int posY, int& imgHeight, int& imgWidth, unsigned char*
         for (int z = posX; z < imgWidth + posX; z++)
         {
             uint32_t pixelColor = (img[idx + 3] << 24 | img[idx] << 16 | img[idx + 1] << 8 | img[idx + 2]);
-            DrawPixel(z, m, pixelColor);
+            DrawPixelAlpha(z, m, pixelColor);
             idx += 4;
         }
     }
